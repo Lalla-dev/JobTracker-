@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 300px;
+      padding: 16px;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+    h3 { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #e2e8f0; }
+    .field { margin-bottom: 12px; }
+    label { display: block; font-size: 11px; margin-bottom: 4px; color: #94a3b8; }
+    input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #fff;
+      font-size: 12px;
+      box-sizing: border-box;
+    }
+    input:focus { outline: none; border-color: #3b82f6; }
+    button {
+      width: 100%;
+      padding: 9px;
+      margin-top: 4px;
+      background: #2563eb;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    button:hover { background: #1d4ed8; }
+    #status { margin-top: 8px; font-size: 11px; text-align: center; }
+  </style>
+</head>
+<body>
+  <h3>Track Application</h3>
+  <div class="field">
+    <label>Job Title</label>
+    <input type="text" id="jobTitle" placeholder="Extracting title..." />
+  </div>
+  <div class="field">
+    <label>Company</label>
+    <input type="text" id="companyName" placeholder="Extracting company..." />
+  </div>
+  <button id="saveBtn">Save to Pipeline</button>
+  <div id="status"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

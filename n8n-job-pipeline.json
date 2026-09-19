@@ -1,0 +1,169 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "log-job",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        -320
+      ],
+      "id": "833fa432-fd67-4a89-aff2-895a756fb470",
+      "webhookId": "19fae622-4535-46f9-bce8-a7be8b160cd6"
+    },
+    {
+      "parameters": {
+        "tableId": "job_applications",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "company_name",
+              "fieldValue": "=={{ $('Webhook').item.json.body.company }}"
+            },
+            {
+              "fieldId": "job_title",
+              "fieldValue": "=={{ $('Webhook').item.json.body.title }}"
+            },
+            {
+              "fieldId": "source_url",
+              "fieldValue": "=={{ $('Webhook').item.json.body.url }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "Applied"
+            },
+            {
+              "fieldId": "user_id",
+              "fieldValue": "37e81124-063b-4fc6-81d4-9ff128224434"
+            },
+            {
+              "fieldId": "ai_notes",
+              "fieldValue": "=$json.text"
+            }
+          ]
+        }
+      },
+      "name": "Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -160
+      ],
+      "id": "f4847eca-ad66-4bda-9646-87b2c0e2e0fd",
+      "credentials": {
+        "supabaseApi": {
+          "id": "S1xYhH0EQkZqZsfC",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Application logged successfully\"\n}",
+        "options": {}
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        640,
+        -160
+      ],
+      "id": "ff08c5d9-b012-4258-ba64-58c7231759db"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "='You are an expert career assistant. Read the following job description. Output a 1-sentence summary of the role, followed by a bulleted list of the top 3 technical skills required. Keep it very concise. \\n\\n' + $json.body.description"
+            }
+          ]
+        },
+        "builtInTools": {
+          "googleSearch": true,
+          "urlContext": true
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        32,
+        -64
+      ],
+      "id": "ad971187-1a8c-4819-abc4-81e90b801124",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "fe1GFXTKAurHeWvB",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "aecc2979-3a00-4950-949e-45d9cbeade14",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "984f773c545093d2552c5da6ab8a14e194459b7eb12ee373360345bff30273f3"
+  },
+  "nodeGroups": [],
+  "id": "pBeWASKJzOyGtbdJ",
+  "tags": []
+}

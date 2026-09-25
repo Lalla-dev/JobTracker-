@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobTracker Settings</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --focus-ring: rgba(59, 130, 246, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      padding: 32px 16px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 580px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .header-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .header-text p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    input[type="url"],
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: #0f172a;
+      color: #fff;
+      font-size: 13px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="url"]:focus,
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .quick-helper {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .quick-helper input {
+      flex: 1;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: #334155;
+      color: #f1f5f9;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .right-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    #statusMessage {
+      display: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    #statusMessage.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    #statusMessage.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="icons/icon-48.png" alt="JobTracker Logo">
+      </div>
+      <div class="header-text">
+        <h1>JobTracker Settings</h1>
+        <p>Configure Supabase authentication & n8n pipeline endpoints</p>
+      </div>
+    </div>
+
+    <div id="statusMessage"></div>
+
+    <!-- Supabase Configuration Card -->
+    <div class="card">
+      <div class="section-title">
+        <span>Supabase Auth & Database</span>
+        <span class="badge">Auth</span>
+      </div>
+
+      <div class="field">
+        <label for="supabaseUrl">Supabase Project URL</label>
+        <input type="url" id="supabaseUrl" placeholder="https://your-project.supabase.co" />
+        <p class="hint">Found in Supabase Dashboard &gt; Project Settings &gt; API &gt; Project URL.</p>
+      </div>
+
+      <div class="field">
+        <label for="supabaseAnonKey">Supabase Anon Public Key</label>
+        <input type="text" id="supabaseAnonKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+        <p class="hint">Found in Project Settings &gt; API &gt; Project API keys &gt; <code>anon</code> / <code>public</code>.</p>
+      </div>
+    </div>
+
+    <!-- n8n Helper Card -->
+    <div class="card">
+      <div class="section-title">
+        <span>Quick Base URL Setup</span>
+        <span class="badge">n8n Helper</span>
+      </div>
+      <div class="quick-helper">
+        <input type="text" id="baseUrlInput" placeholder="http://localhost:5678" />
+        <button type="button" id="applyBaseUrlBtn" class="btn btn-secondary">Apply to Endpoints</button>
+      </div>
+      <p class="hint">Entering a base URL auto-fills standard <code>/webhook-test/...</code> paths below.</p>
+    </div>
+
+    <!-- Webhook Endpoints Card -->
+    <div class="card">
+      <div class="section-title">
+        <span>n8n Webhook Endpoints</span>
+      </div>
+
+      <div class="field">
+        <label for="logJobUrl">1. Job Logging Webhook URL</label>
+        <input type="url" id="logJobUrl" placeholder="http://localhost:5678/webhook-test/log-job" required />
+        <p class="hint">Dispatched from popup. Receives job details, validates JWT, runs Gemini AI parsing, and inserts a row into Supabase.</p>
+      </div>
+
+      <div class="field">
+        <label for="successJobUrl">2. Success Page Webhook URL</label>
+        <input type="url" id="successJobUrl" placeholder="http://localhost:5678/webhook-test/job-success" required />
+        <p class="hint">Dispatched silently by background script when detecting confirmation pages (<code>/thanks</code>, <code>/success</code>, etc.) to update Supabase row status to Applied.</p>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="resetBtn" class="btn btn-outline">Reset Defaults</button>
+        <div class="right-actions">
+          <button type="button" id="saveBtn" class="btn btn-primary">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      JobTracker &bull; Manifest V3 &bull; Stored in <code>chrome.storage.sync</code>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

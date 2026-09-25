@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#1d4ed8" />
+    </linearGradient>
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background rounded rect -->
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="#0f172a" />
+  
+  <!-- Briefcase Handle -->
+  <path d="M48 42 V30 C48 24 53 20 60 20 H68 C75 20 80 24 80 30 V42" 
+        fill="none" stroke="#60a5fa" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Briefcase Body -->
+  <rect x="20" y="42" width="88" height="64" rx="14" fill="url(#bgGrad)" filter="url(#shadow)" />
+  
+  <!-- Horizontal seam -->
+  <line x1="20" y1="62" x2="108" y2="62" stroke="#1e40af" stroke-width="3" opacity="0.8"/>
+
+  <!-- Success Checkmark Badge -->
+  <circle cx="64" cy="74" r="21" fill="#0f172a" />
+  <path d="M54 74 L61 81 L75 67" 
+        fill="none" stroke="url(#checkGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

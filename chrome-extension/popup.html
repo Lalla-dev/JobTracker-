@@ -3,17 +3,103 @@
 <head>
   <meta charset="utf-8">
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
-      width: 300px;
+      width: 320px;
       padding: 16px;
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #0f172a;
       color: #f8fafc;
     }
-    h3 { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #e2e8f0; }
-    .field { margin-bottom: 12px; }
-    label { display: block; font-size: 11px; margin-bottom: 4px; color: #94a3b8; }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-img {
+      width: 22px;
+      height: 22px;
+    }
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      padding: 4px;
+      cursor: pointer;
+      color: #94a3b8;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+    .icon-btn:hover {
+      color: #f8fafc;
+      background: #1e293b;
+    }
+    .user-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+    .user-pill span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 190px;
+      color: #cbd5e1;
+    }
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #f87171;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 2px 4px;
+    }
+    .logout-btn:hover {
+      text-decoration: underline;
+    }
+    .field {
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      color: #94a3b8;
+    }
     input {
       width: 100%;
       padding: 8px 10px;
@@ -22,13 +108,15 @@
       background: #1e293b;
       color: #fff;
       font-size: 12px;
-      box-sizing: border-box;
     }
-    input:focus { outline: none; border-color: #3b82f6; }
-    button {
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    button.btn-primary {
       width: 100%;
-      padding: 9px;
-      margin-top: 4px;
+      padding: 10px;
+      margin-top: 6px;
       background: #2563eb;
       border: none;
       border-radius: 6px;
@@ -36,25 +124,132 @@
       font-weight: 600;
       font-size: 12px;
       cursor: pointer;
+      transition: background 0.15s ease, opacity 0.15s ease;
+    }
+    button.btn-primary:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+    button.btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    button.btn-secondary {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      background: #334155;
+      border: none;
+      border-radius: 6px;
+      color: #e2e8f0;
+      font-weight: 500;
+      font-size: 11px;
+      cursor: pointer;
       transition: background 0.15s ease;
     }
-    button:hover { background: #1d4ed8; }
-    #status { margin-top: 8px; font-size: 11px; text-align: center; }
+    button.btn-secondary:hover:not(:disabled) {
+      background: #475569;
+    }
+    .status-box {
+      margin-top: 10px;
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.4;
+      min-height: 16px;
+      word-break: break-word;
+    }
+    .warning-box {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .warning-box a {
+      color: #60a5fa;
+      cursor: pointer;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h3>Track Application</h3>
-  <div class="field">
-    <label>Job Title</label>
-    <input type="text" id="jobTitle" placeholder="Extracting title..." />
-  </div>
-  <div class="field">
-    <label>Company</label>
-    <input type="text" id="companyName" placeholder="Extracting company..." />
-  </div>
-  <button id="saveBtn">Save to Pipeline</button>
-  <div id="status"></div>
 
+  <!-- VIEW 1: AUTHENTICATION / LOGIN -->
+  <div id="loginView" style="display: none;">
+    <div class="header">
+      <div class="title-group">
+        <img src="icons/icon-48.png" alt="Logo" class="logo-img">
+        <h3>Sign In to JobTracker</h3>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="loginSettingsBtn" title="Extension Settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="supabaseWarning" class="warning-box" style="display: none;">
+      Supabase credentials missing. <a id="openSettingsLink">Click here to configure Settings</a>.
+    </div>
+
+    <div class="field">
+      <label for="authEmail">Email</label>
+      <input type="email" id="authEmail" placeholder="you@domain.com" required />
+    </div>
+
+    <div class="field">
+      <label for="authPassword">Password</label>
+      <input type="password" id="authPassword" placeholder="••••••••" required />
+    </div>
+
+    <button id="loginBtn" class="btn-primary">Log In</button>
+    <button id="signupBtn" class="btn-secondary">Sign Up</button>
+    <div id="authStatus" class="status-box"></div>
+  </div>
+
+  <!-- VIEW 2: JOB TRACKING (AUTHENTICATED) -->
+  <div id="trackView" style="display: none;">
+    <div class="header">
+      <div class="title-group">
+        <img src="icons/icon-48.png" alt="Logo" class="logo-img">
+        <h3>Track Application</h3>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="trackSettingsBtn" title="Extension Settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Active User Status Pill -->
+    <div class="user-pill">
+      <span id="userEmailSpan">Signed in</span>
+      <button id="logoutBtn" class="logout-btn">Log Out</button>
+    </div>
+
+    <div class="field">
+      <label for="jobTitle">Job Title</label>
+      <input type="text" id="jobTitle" placeholder="Extracting title..." />
+    </div>
+
+    <div class="field">
+      <label for="companyName">Company</label>
+      <input type="text" id="companyName" placeholder="Extracting company..." />
+    </div>
+
+    <button id="saveBtn" class="btn-primary">Save to Pipeline</button>
+    <div id="status" class="status-box"></div>
+  </div>
+
+  <script src="supabase.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

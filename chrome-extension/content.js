@@ -31,7 +31,7 @@ function scrapeJob() {
 
   if (pageType === "linkedin") {
     const titleEl = document.querySelector(".job-details-jobs-unified-top-card__job-title, .jobs-unified-top-card__job-title, .scaffold-layout__main h1, h1.t-24, h1");
-    const companyEl = document.querySelector(".job-details-jobs-unified-top-card__company-name a, .job-details-jobs-unified-top-card__company-name, .jobs-unified-top-card__company-name a, a[href*='/company/']");
+    const companyEl = document.querySelector(".job-details-jobs-unified-top-card__company-name a, .job-details-jobs-unified-top-card__company-name, .jobs-unified-top-card__company-name a, a[href*='/company/'], .job-card-container__primary-description, .app-aware-link");
 
     data.title = textFrom(titleEl);
     data.company = textFrom(companyEl);
